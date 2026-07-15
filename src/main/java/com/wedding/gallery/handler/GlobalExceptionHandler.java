@@ -1,6 +1,8 @@
 package com.wedding.gallery.handler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,18 +29,14 @@ public class GlobalExceptionHandler {
         ApiResponse<Map<String, String>> response = ApiResponse.<Map<String, String>>builder()
                 .success(false)
                 .message("Validasi data gagal, mohon periksa kembali inputan Anda.")
-                .data(errors) // Detail field yang error dikirim ke ReactJS
+                .data(errors)
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    /**
-     * 2. MENANGKAP ATURAN BISNIS APLIKASI (Custom BusinessException)
-     * Ini yang menangkap kalau kuota upload foto tamu sudah mencapai maksimal 10.
-     */
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ApiResponse<Void>> handleBusinessException(BusinessException ex) {
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<Void>> handleIllegalArgumentException(IllegalArgumentException ex) {
         log.warn("⚠️ Pelanggaran aturan aplikasi: {}", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
@@ -46,10 +44,6 @@ public class GlobalExceptionHandler {
         );
     }
 
-    /**
-     * 3. BUMPER UTAMA: MENANGKAP SEMUA ERROR SERVER (500 Internal Server Error)
-     * Dipakai jika database mati, network VPS bermasalah, atau token Cloudflare R2 bermasalah.
-     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleAllUncaughtExceptions(Exception ex) {
         // Detail stack trace error lengkap tetap aman dicatat oleh ExceptionAuditAspect kamu di file log VPS
