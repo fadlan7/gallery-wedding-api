@@ -1,41 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <property name="LOG_PATH" value="./logs" />
-    <property name="LOG_FILE_NAME" value="wedding-app" />
+    <!-- ===================== -->
+    <!-- Environment-safe log path -->
+    <!-- ===================== -->
+    <property name="LOGS" value="${LOG_PATH:-./logs}" />
 
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- ===================== -->
+    <!-- Console Appender -->
+    <!-- ===================== -->
+    <appender name="Console"
+              class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %5level %logger{36} - %msg%n</pattern>
+            <pattern>
+                %green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %cyan(%msg%n)
+            </pattern>
         </encoder>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
+    <!-- ===================== -->
+    <!-- Rolling File Appender -->
+    <!-- ===================== -->
+    <appender name="RollingFile"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
 
+        <file>${LOGS}/jobportal.log</file>
+
+        <encoder>
+            <pattern>
+                {"timestamp":"%d{yyyy-MM-dd HH:mm:ss}","level":"%p","logger":"%c","message":"%m"}
+            </pattern>
+        </encoder>
+
+        <!-- Modern rolling policy (size + time based) -->
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_PATH}/archived/${LOG_FILE_NAME}-%d{yyyy-MM-methods, S3-Compatible, dddd-MM-dd}.%i.log.gz</fileNamePattern>
-
-            <maxFileSize>10MB</maxFileSize>
-
-            <totalSizeCap>1GB</totalSizeCap>
-
+            <fileNamePattern>
+                ${LOGS}/archived/jobportal-%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <maxFileSize>1MB</maxFileSize>
             <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
-
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %5level %logger{36} - %msg%n</pattern>
-        </encoder>
     </appender>
 
+    <!-- ===================== -->
+    <!-- Root Logger -->
+    <!-- ===================== -->
     <root level="INFO">
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="FILE" />
+        <appender-ref ref="RollingFile"/>
+        <appender-ref ref="Console"/>
     </root>
 
-    <logger name="com.wedding.gallery" level="DEBUG" additivity="false">
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="FILE" />
+    <!-- ===================== -->
+    <!-- Application-specific ERROR logs -->
+    <!-- ===================== -->
+    <logger name="com.eazybytes.jobportal"
+            level="INFO"
+            additivity="false">
+        <appender-ref ref="RollingFile"/>
+        <appender-ref ref="Console"/>
     </logger>
 
 </configuration>
