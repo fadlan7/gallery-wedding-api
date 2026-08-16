@@ -85,9 +85,9 @@ public class GalleryServiceImpl implements GalleryService {
     }
 
     @Override
-    public GalleryResponseDTO updateApprovedStatus(Long guestId) {
+    public GalleryResponseDTO updateApprovedStatus(Long id) {
 
-        GalleryItem currentItem = findByIdOrThrowNotFound(guestId);
+        GalleryItem currentItem = findByIdOrThrowNotFound(id);
 
         currentItem.setIsApproved(!currentItem.getIsApproved());
 
@@ -101,6 +101,20 @@ public class GalleryServiceImpl implements GalleryService {
                 .audioPath(currentItem.getAudioPath())
                 .isApproved(currentItem.getIsApproved())
                 .createdAt(currentItem.getCreatedAt())
+                .build();
+    }
+
+    @Override
+    public GalleryResponseDTO getOneById(Long id) {
+        GalleryItem item =findByIdOrThrowNotFound(id);
+
+        return GalleryResponseDTO.builder()
+                .id(item.getId())
+                .guestUuid(item.getGuestUuid())
+                .imagePath(item.getImagePath())
+                .audioPath(item.getAudioPath())
+                .isApproved(item.getIsApproved())
+                .createdAt(item.getCreatedAt())
                 .build();
     }
 

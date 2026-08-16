@@ -52,6 +52,18 @@ public class GalleryController {
         }
     }
 
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<CommonResponse<GalleryResponseDTO>> getMenuById(@PathVariable Long id) {
+        GalleryResponseDTO menu = galleryService.getOneById(id);
+
+        CommonResponse<GalleryResponseDTO> response = CommonResponse.<GalleryResponseDTO>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message("Success get data")
+                .data(menu)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
     @GetMapping(path = "/galleries")
     public ResponseEntity<CommonResponse<List<GalleryResponseDTO>>> userGallery(
             @RequestParam(name = "page", defaultValue = "1") Integer page,
