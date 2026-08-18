@@ -8,6 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface GalleryService {
     GalleryResponseDTO create(String guestId, MultipartFile image, MultipartFile voiceNote);
     Page<GalleryResponseDTO> getAllGallery(SearchGalleryRequest request, String type);
-    GalleryResponseDTO updateApprovedStatus(Long id);
-    GalleryResponseDTO getOneById(Long id);
+    GalleryResponseDTO updateApprovedStatus(String id);
+    GalleryResponseDTO getOneById(String id);
 }

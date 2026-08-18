@@ -53,7 +53,7 @@ public class GalleryController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<CommonResponse<GalleryResponseDTO>> getMenuById(@PathVariable Long id) {
+    public ResponseEntity<CommonResponse<GalleryResponseDTO>> getGalleryById(@PathVariable String id) {
         GalleryResponseDTO menu = galleryService.getOneById(id);
 
         CommonResponse<GalleryResponseDTO> response = CommonResponse.<GalleryResponseDTO>builder()
@@ -123,10 +123,10 @@ public class GalleryController {
 
     @PutMapping(name = "update-status")
     public ResponseEntity<CommonResponse<?>> updateMenu(
-            @RequestParam(name = "guestUuid") Long guestUuid
+            @RequestParam(name = "id") String id
     ) {
         try {
-            GalleryResponseDTO updatedMenu = galleryService.updateApprovedStatus(guestUuid);
+            GalleryResponseDTO updatedMenu = galleryService.updateApprovedStatus(id);
 
             CommonResponse<GalleryResponseDTO> response = CommonResponse.<GalleryResponseDTO>builder()
                     .statusCode(HttpStatus.CREATED.value())

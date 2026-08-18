@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class GalleryResponseDTO {
 
-    private Long id;
+    private String id;
     private String guestUuid;
     private String imagePath;
     private String audioPath;

@@ -85,7 +85,7 @@ public class GalleryServiceImpl implements GalleryService {
     }
 
     @Override
-    public GalleryResponseDTO updateApprovedStatus(Long id) {
+    public GalleryResponseDTO updateApprovedStatus(String id) {
 
         GalleryItem currentItem = findByIdOrThrowNotFound(id);
 
@@ -105,7 +105,7 @@ public class GalleryServiceImpl implements GalleryService {
     }
 
     @Override
-    public GalleryResponseDTO getOneById(Long id) {
+    public GalleryResponseDTO getOneById(String id) {
         GalleryItem item =findByIdOrThrowNotFound(id);
 
         return GalleryResponseDTO.builder()
@@ -118,7 +118,7 @@ public class GalleryServiceImpl implements GalleryService {
                 .build();
     }
 
-    public GalleryItem findByIdOrThrowNotFound(Long id) {
+    public GalleryItem findByIdOrThrowNotFound(String id) {
         return galleryRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tidak ditemukan"));
     }
 

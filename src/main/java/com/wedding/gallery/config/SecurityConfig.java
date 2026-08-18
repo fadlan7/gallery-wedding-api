@@ -17,9 +17,11 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception{
-        http.csrf(csrf -> csrf.disable())
+        http
+                .cors(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((req) -> req
-                        .requestMatchers("/api/gallery/upload", "/api/gallery/galleries","/api/gallery/my-galleries").permitAll()
+                        .requestMatchers("/api/gallery/upload", "/api/gallery/galleries","/api/gallery/my-galleries", "/api/gallery/{id}").permitAll()
                         .anyRequest().authenticated());
         http.formLogin(Customizer.withDefaults());
         http.httpBasic(Customizer.withDefaults());

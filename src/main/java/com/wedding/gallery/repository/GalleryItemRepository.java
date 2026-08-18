@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface GalleryItemRepository extends JpaRepository<GalleryItem, Long> {
+public interface GalleryItemRepository extends JpaRepository<GalleryItem, String> {
     long countByGuestUuid(String guestUuid);
     Page<GalleryItem> findByIsApprovedTrueOrderByCreatedAtDesc(Pageable pageable);
     Page<GalleryItem> findByGuestUuidOrderByCreatedAtDesc(String guestUuid,Pageable pageable);
