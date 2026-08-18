@@ -22,4 +22,7 @@ public class CloudflareR2Access {
 
     @Value("${cloudflare.r2.public-url}")
     private String publicUrl;
+
+    @Value("${front-end.public-url}")
+    private String fePublicUrl;
 }
