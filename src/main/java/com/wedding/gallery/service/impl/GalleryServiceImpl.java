@@ -16,7 +16,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -26,7 +25,7 @@ public class GalleryServiceImpl implements GalleryService {
     private final GalleryItemRepository galleryRepository;
 
     @Override
-    public GalleryResponseDTO create( String guestId, MultipartFile image, MultipartFile voiceNote) {
+    public GalleryResponseDTO create( String guestId, MultipartFile image, MultipartFile previewImage, MultipartFile voiceNote) {
         long jumlahUpload = galleryRepository.countByGuestUuid(guestId);
         if (jumlahUpload >= 10) {
             throw new IllegalArgumentException("Maaf, kuota upload kamu sudah penuh (Maksimal 10 kali upload).");
@@ -34,10 +33,12 @@ public class GalleryServiceImpl implements GalleryService {
 
         String imagePath = cloudflareR2Service.uploadFile(image, "images");
         String audioPath = cloudflareR2Service.uploadFile(voiceNote, "audios");
+        String previewImagePath = cloudflareR2Service.uploadFile(previewImage, "preview_images");
 
         GalleryItem item = GalleryItem.builder()
                 .guestUuid(guestId)
                 .imagePath(imagePath)
+                .imagePreviewPath(previewImagePath)
                 .isApproved(true)
                 .audioPath(audioPath)
                 .build();
@@ -48,6 +49,7 @@ public class GalleryServiceImpl implements GalleryService {
                 .id(item.getId())
                 .guestUuid(item.getGuestUuid())
                 .imagePath(item.getImagePath())
+                .imagePreviewPath(item.getImagePreviewPath())
                 .audioPath(item.getAudioPath())
                 .isApproved(item.getIsApproved())
                 .createdAt(item.getCreatedAt())
@@ -76,6 +78,7 @@ public class GalleryServiceImpl implements GalleryService {
                         .id(galleryItem.getId())
                         .guestUuid(galleryItem.getGuestUuid())
                         .imagePath(galleryItem.getImagePath())
+                        .imagePreviewPath(galleryItem.getImagePreviewPath())
                         .audioPath(galleryItem.getAudioPath())
                         .isApproved(galleryItem.getIsApproved())
                         .createdAt(galleryItem.getCreatedAt())
@@ -98,6 +101,7 @@ public class GalleryServiceImpl implements GalleryService {
                 .id(currentItem.getId())
                 .guestUuid(currentItem.getGuestUuid())
                 .imagePath(currentItem.getImagePath())
+                .imagePreviewPath(currentItem.getImagePreviewPath())
                 .audioPath(currentItem.getAudioPath())
                 .isApproved(currentItem.getIsApproved())
                 .createdAt(currentItem.getCreatedAt())
@@ -112,6 +116,7 @@ public class GalleryServiceImpl implements GalleryService {
                 .id(item.getId())
                 .guestUuid(item.getGuestUuid())
                 .imagePath(item.getImagePath())
+                .imagePreviewPath(item.getImagePreviewPath())
                 .audioPath(item.getAudioPath())
                 .isApproved(item.getIsApproved())
                 .createdAt(item.getCreatedAt())

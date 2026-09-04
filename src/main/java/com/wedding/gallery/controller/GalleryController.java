@@ -31,10 +31,11 @@ public class GalleryController {
     )
     public ResponseEntity<CommonResponse<GalleryResponseDTO>> create(
             @RequestPart(name = "guestUuid") String guestId,
-            @RequestParam(name = "image", required = false) MultipartFile image,
+            @RequestParam(name = "image") MultipartFile image,
+            @RequestParam(name = "imagePreview") MultipartFile imagePreview,
             @RequestParam(name = "voiceNote", required = false) MultipartFile voiceNote) {
         try{
-            GalleryResponseDTO upload = galleryService.create(guestId, image, voiceNote);
+            GalleryResponseDTO upload = galleryService.create(guestId, image, imagePreview, voiceNote);
 
             CommonResponse<GalleryResponseDTO> response = CommonResponse.<GalleryResponseDTO>builder()
                     .statusCode(HttpStatus.CREATED.value())

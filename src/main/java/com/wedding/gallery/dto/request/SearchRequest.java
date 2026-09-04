@@ -8,6 +8,10 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class SearchGalleryRequest extends  SearchRequest{
+public class SearchRequest {
+    private Integer page;
+    private Integer size;
+    private String sortBy;
+    private String direction;
     private String guestUuid;
 }

@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "gallery_items")
@@ -27,6 +26,9 @@ public class GalleryItem {
 
     @Column(name = "image_path", nullable = false)
     private String imagePath;
+
+    @Column(name = "image_preview_path", nullable = false)
+    private String imagePreviewPath;
 
     @Column(name = "audio_path")
     private String audioPath;

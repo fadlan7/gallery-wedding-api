@@ -27,7 +27,6 @@ public class CloudflareR2ServiceImpl implements CloudflareR2Service {
     public CloudflareR2ServiceImpl(CloudflareR2Access r2Access) {
         this.r2Access = r2Access;
 
-        // Inisialisasi S3Client
         AwsBasicCredentials credentials = AwsBasicCredentials.create(r2Access.getAccessKey(), r2Access.getSecretKey());
 
         S3Configuration serviceConfiguration = S3Configuration.builder()

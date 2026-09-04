@@ -16,6 +16,7 @@ public class GalleryResponseDTO {
     private String id;
     private String guestUuid;
     private String imagePath;
+    private String imagePreviewPath;
     private String audioPath;
     private Boolean isApproved;
     private LocalDateTime createdAt;
