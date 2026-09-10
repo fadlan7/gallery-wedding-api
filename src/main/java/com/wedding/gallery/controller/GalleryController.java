@@ -145,6 +145,22 @@ public class GalleryController {
         }
     }
 
+
+    @GetMapping(path = "/health-check")
+    public ResponseEntity<CommonResponse<String>> userGallery(
+    ){
+        PagingResponse pagingResponse = PagingResponse.builder().build();
+
+        CommonResponse<String> response = CommonResponse.<String>builder()
+                .statusCode(HttpStatus.OK.value())
+                .message("Success")
+                .data("healthy")
+                .paging(pagingResponse)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
     @NonNull
     private ResponseEntity<CommonResponse<List<GalleryResponseDTO>>> getCommonResponseResponseEntity(Page<GalleryResponseDTO> gallery) {
         PagingResponse pagingResponse = PagingResponse.builder()
