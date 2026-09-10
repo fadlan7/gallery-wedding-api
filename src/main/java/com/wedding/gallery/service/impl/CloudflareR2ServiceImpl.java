@@ -63,7 +63,7 @@ public class CloudflareR2ServiceImpl implements CloudflareR2Service {
                     RequestBody.fromBytes(file.getBytes())
             );
 
-            return String.format("%s/%s", r2Access.getPublicUrl(), keyName);
+            return String.format("%s", keyName);
 
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Gagal upload file ke storage: " + e.getMessage());

@@ -1,5 +1,6 @@
 package com.wedding.gallery.service.impl;
 
+import com.wedding.gallery.config.CloudflareR2Access;
 import com.wedding.gallery.dto.request.SearchGalleryRequest;
 import com.wedding.gallery.dto.response.GalleryResponseDTO;
 import com.wedding.gallery.entity.GalleryItem;
@@ -23,6 +24,7 @@ public class GalleryServiceImpl implements GalleryService {
 
     private final CloudflareR2Service cloudflareR2Service;
     private final GalleryItemRepository galleryRepository;
+    private final CloudflareR2Access r2Access;
 
     @Override
     public GalleryResponseDTO create( String guestId, MultipartFile image, MultipartFile previewImage, MultipartFile voiceNote) {
@@ -48,9 +50,9 @@ public class GalleryServiceImpl implements GalleryService {
         return GalleryResponseDTO.builder()
                 .id(item.getId())
                 .guestUuid(item.getGuestUuid())
-                .imagePath(item.getImagePath())
-                .imagePreviewPath(item.getImagePreviewPath())
-                .audioPath(item.getAudioPath())
+                .imagePath(r2Access.getPublicUrl() + "/" +  item.getImagePath())
+                .imagePreviewPath(r2Access.getPublicUrl() + "/" + item.getImagePreviewPath())
+                .audioPath(r2Access.getPublicUrl() + "/" + item.getAudioPath())
                 .isApproved(item.getIsApproved())
                 .createdAt(item.getCreatedAt())
                 .build();
@@ -77,9 +79,9 @@ public class GalleryServiceImpl implements GalleryService {
                 .map(galleryItem -> GalleryResponseDTO.builder()
                         .id(galleryItem.getId())
                         .guestUuid(galleryItem.getGuestUuid())
-                        .imagePath(galleryItem.getImagePath())
-                        .imagePreviewPath(galleryItem.getImagePreviewPath())
-                        .audioPath(galleryItem.getAudioPath())
+                        .imagePath(r2Access.getPublicUrl() + "/" +  galleryItem.getImagePath())
+                        .imagePreviewPath(r2Access.getPublicUrl() + "/" + galleryItem.getImagePreviewPath())
+                        .audioPath(r2Access.getPublicUrl() + "/" + galleryItem.getAudioPath())
                         .isApproved(galleryItem.getIsApproved())
                         .createdAt(galleryItem.getCreatedAt())
                         .build()).toList();
@@ -100,9 +102,9 @@ public class GalleryServiceImpl implements GalleryService {
         return GalleryResponseDTO.builder()
                 .id(currentItem.getId())
                 .guestUuid(currentItem.getGuestUuid())
-                .imagePath(currentItem.getImagePath())
-                .imagePreviewPath(currentItem.getImagePreviewPath())
-                .audioPath(currentItem.getAudioPath())
+                .imagePath(r2Access.getPublicUrl() + "/" +  currentItem.getImagePath())
+                .imagePreviewPath(r2Access.getPublicUrl() + "/" + currentItem.getImagePreviewPath())
+                .audioPath(r2Access.getPublicUrl() + "/" + currentItem.getAudioPath())
                 .isApproved(currentItem.getIsApproved())
                 .createdAt(currentItem.getCreatedAt())
                 .build();
@@ -115,9 +117,9 @@ public class GalleryServiceImpl implements GalleryService {
         return GalleryResponseDTO.builder()
                 .id(item.getId())
                 .guestUuid(item.getGuestUuid())
-                .imagePath(item.getImagePath())
-                .imagePreviewPath(item.getImagePreviewPath())
-                .audioPath(item.getAudioPath())
+                .imagePath(r2Access.getPublicUrl() + "/" +  item.getImagePath())
+                .imagePreviewPath(r2Access.getPublicUrl() + "/" + item.getImagePreviewPath())
+                .audioPath(r2Access.getPublicUrl() + "/" + item.getAudioPath())
                 .isApproved(item.getIsApproved())
                 .createdAt(item.getCreatedAt())
                 .build();
