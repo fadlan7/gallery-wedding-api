@@ -47,12 +47,16 @@ public class GalleryServiceImpl implements GalleryService {
 
         galleryRepository.save(item);
 
+        return getGalleryResponseDTO(item);
+    }
+
+    private GalleryResponseDTO getGalleryResponseDTO(GalleryItem item) {
         return GalleryResponseDTO.builder()
                 .id(item.getId())
                 .guestUuid(item.getGuestUuid())
                 .imagePath(r2Access.getPublicUrl() + "/" +  item.getImagePath())
-                .imagePreviewPath(r2Access.getPublicUrl() + "/" + item.getImagePreviewPath())
-                .audioPath(r2Access.getPublicUrl() + "/" + item.getAudioPath())
+                .imagePreviewPath(item.getImagePreviewPath() != null ? r2Access.getPublicUrl() + "/" + item.getImagePreviewPath() : null)
+                .audioPath(item.getAudioPath() != null ? r2Access.getPublicUrl() + "/" + item.getAudioPath() : null)
                 .isApproved(item.getIsApproved())
                 .createdAt(item.getCreatedAt())
                 .build();
@@ -76,15 +80,7 @@ public class GalleryServiceImpl implements GalleryService {
 
 
         List<GalleryResponseDTO> galleryResponse = galleryItems.getContent().stream()
-                .map(galleryItem -> GalleryResponseDTO.builder()
-                        .id(galleryItem.getId())
-                        .guestUuid(galleryItem.getGuestUuid())
-                        .imagePath(r2Access.getPublicUrl() + "/" +  galleryItem.getImagePath())
-                        .imagePreviewPath(r2Access.getPublicUrl() + "/" + galleryItem.getImagePreviewPath())
-                        .audioPath(r2Access.getPublicUrl() + "/" + galleryItem.getAudioPath())
-                        .isApproved(galleryItem.getIsApproved())
-                        .createdAt(galleryItem.getCreatedAt())
-                        .build()).toList();
+                .map(galleryItem -> getGalleryResponseDTO(galleryItem)).toList();
 
         return new PageImpl<>(galleryResponse, pageable, galleryItems.getTotalElements());
     }
@@ -99,30 +95,14 @@ public class GalleryServiceImpl implements GalleryService {
         galleryRepository.saveAndFlush(currentItem);
 
 
-        return GalleryResponseDTO.builder()
-                .id(currentItem.getId())
-                .guestUuid(currentItem.getGuestUuid())
-                .imagePath(r2Access.getPublicUrl() + "/" +  currentItem.getImagePath())
-                .imagePreviewPath(r2Access.getPublicUrl() + "/" + currentItem.getImagePreviewPath())
-                .audioPath(r2Access.getPublicUrl() + "/" + currentItem.getAudioPath())
-                .isApproved(currentItem.getIsApproved())
-                .createdAt(currentItem.getCreatedAt())
-                .build();
+        return getGalleryResponseDTO(currentItem);
     }
 
     @Override
     public GalleryResponseDTO getOneById(String id) {
         GalleryItem item =findByIdOrThrowNotFound(id);
 
-        return GalleryResponseDTO.builder()
-                .id(item.getId())
-                .guestUuid(item.getGuestUuid())
-                .imagePath(r2Access.getPublicUrl() + "/" +  item.getImagePath())
-                .imagePreviewPath(r2Access.getPublicUrl() + "/" + item.getImagePreviewPath())
-                .audioPath(r2Access.getPublicUrl() + "/" + item.getAudioPath())
-                .isApproved(item.getIsApproved())
-                .createdAt(item.getCreatedAt())
-                .build();
+        return getGalleryResponseDTO(item);
     }
 
     public GalleryItem findByIdOrThrowNotFound(String id) {
