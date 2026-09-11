@@ -28,10 +28,10 @@ public class GalleryServiceImpl implements GalleryService {
 
     @Override
     public GalleryResponseDTO create( String guestId, MultipartFile image, MultipartFile previewImage, MultipartFile voiceNote) {
-        long jumlahUpload = galleryRepository.countByGuestUuid(guestId);
-        if (jumlahUpload >= 10) {
-            throw new IllegalArgumentException("Maaf, kuota upload kamu sudah penuh (Maksimal 10 kali upload).");
-        }
+//        long jumlahUpload = galleryRepository.countByGuestUuid(guestId);
+//        if (jumlahUpload >= 10) {
+//            throw new IllegalArgumentException("Maaf, kuota upload kamu sudah penuh (Maksimal 10 kali upload).");
+//        }
 
         String imagePath = cloudflareR2Service.uploadFile(image, "images");
         String audioPath = cloudflareR2Service.uploadFile(voiceNote, "audios");
